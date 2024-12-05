@@ -20,7 +20,7 @@ public class AdvertRepositoryImp implements AdvertRepository {
     @Override
     public void save(Advert advert) {
         advertDatabase.save(advert);
-        log.info("New 'advert' has been successfully saved: {}", advert);
+        log.info("New 'advert' has been successfully saved, id = {}", advert.getNumberId());
     }
 
     @Override
@@ -31,16 +31,19 @@ public class AdvertRepositoryImp implements AdvertRepository {
 
     @Override
     public boolean deleteById(Integer numberId) {
+        log.info("Delete 'advert' by id = {}", numberId);
         return advertDatabase.deleteById(numberId);
     }
 
     @Override
     public List<Advert> getAllAdvert() {
+        log.info("Find all adverts");
         return advertDatabase.getAllAdvert();
     }
 
     @Override
     public Stream<Advert> getAdvertByCondition(Predicate<Advert> condition) {
+        log.info("Find adverts by condition");
         return advertDatabase.getAdvertByCondition(condition);
     }
 

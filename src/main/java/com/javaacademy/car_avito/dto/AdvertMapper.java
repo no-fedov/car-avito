@@ -1,31 +1,31 @@
 package com.javaacademy.car_avito.dto;
 
 import com.javaacademy.car_avito.model.Advert;
-import lombok.experimental.UtilityClass;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@UtilityClass
+@Component
 public class AdvertMapper {
 
-    public static Advert convertFromCreateAdvertDtoToAdvert(CreateAdvertDto advertDto) {
-        return new Advert(
+    public Advert convertFromCreateAdvertDtoToAdvert(CreateAdvertDto advertDto) {
+        return new Advert(null,
                 advertDto.getNameBrand(),
                 advertDto.getColor(),
                 advertDto.getPrice()
         );
     }
 
-    public static AdvertDto convertFromCreateAdvertDtoToAdvertDto(Advert advert) {
+    public AdvertDto convertFromCreateAdvertDtoToAdvertDto(Advert advert) {
         return new AdvertDto(advert.getNumberId(),
                 advert.getNameBrand(),
                 advert.getColor(),
                 advert.getPrice());
     }
 
-    public static List<AdvertDto> convertFromCreateAdvertDtoToAdvertDto(List<Advert> advertDtoList) {
+    public List<AdvertDto> convertFromCreateAdvertDtoToAdvertDto(List<Advert> advertDtoList) {
         return advertDtoList.stream()
-                .map(AdvertMapper::convertFromCreateAdvertDtoToAdvertDto)
+                .map(this::convertFromCreateAdvertDtoToAdvertDto)
                 .toList();
     }
 
