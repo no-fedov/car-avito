@@ -3,7 +3,6 @@ package com.javaacademy.car_avito.controller;
 import com.javaacademy.car_avito.dto.AdvertDto;
 import com.javaacademy.car_avito.dto.CreateAdvertDto;
 import com.javaacademy.car_avito.service.AdvertService;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,14 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import static com.javaacademy.car_avito.controller.AdvertControllerURLParameter.BRAND_PARAM;
-import static com.javaacademy.car_avito.controller.AdvertControllerURLParameter.COLOR_PARAM;
-import static com.javaacademy.car_avito.controller.AdvertControllerURLParameter.PRICE_PARAM;
 import static com.javaacademy.car_avito.util.RequestParameterUtil.getParametersAsString;
 
 @Slf4j
@@ -32,7 +26,6 @@ import static com.javaacademy.car_avito.util.RequestParameterUtil.getParametersA
 public class AdvertController {
 
     private final AdvertService advertService;
-    private final Set<String> urlParameters = new HashSet<>();
 
     @PostMapping
     public void save(@RequestBody CreateAdvertDto createAdvertDto) {
@@ -55,9 +48,7 @@ public class AdvertController {
     @GetMapping
     public List<AdvertDto> searchAdvertByCondition(@RequestParam Map<String, String> requestParameters) {
         for (String urlParameter : requestParameters.keySet()) {
-            if (!urlParameters.contains(urlParameter)) {
-                throw new RuntimeException("Unknown url parameter: %s".formatted(urlParameter));
-            }
+            SearchParameter.checkValidParameter(urlParameter);
         }
         if (requestParameters.isEmpty()) {
             log.info("GET: /advert");
@@ -65,13 +56,6 @@ public class AdvertController {
         }
         log.info("GET: /advert?{}", getParametersAsString(requestParameters));
         return advertService.getAdvertByCondition(requestParameters).toList();
-    }
-
-    @PostConstruct
-    private void init() {
-        urlParameters.add(BRAND_PARAM);
-        urlParameters.add(COLOR_PARAM);
-        urlParameters.add(PRICE_PARAM);
     }
 
 }

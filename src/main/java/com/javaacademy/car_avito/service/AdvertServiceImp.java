@@ -1,5 +1,6 @@
 package com.javaacademy.car_avito.service;
 
+import com.javaacademy.car_avito.controller.SearchParameter;
 import com.javaacademy.car_avito.dto.AdvertDto;
 import com.javaacademy.car_avito.dto.AdvertMapper;
 import com.javaacademy.car_avito.dto.CreateAdvertDto;
@@ -19,10 +20,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-
-import static com.javaacademy.car_avito.controller.AdvertControllerURLParameter.BRAND_PARAM;
-import static com.javaacademy.car_avito.controller.AdvertControllerURLParameter.COLOR_PARAM;
-import static com.javaacademy.car_avito.controller.AdvertControllerURLParameter.PRICE_PARAM;
 
 @Slf4j
 @Component
@@ -74,21 +71,21 @@ public class AdvertServiceImp implements AdvertService {
 
     @PostConstruct
     private void init() {
-        conditionsForSearch.put(BRAND_PARAM,
+        conditionsForSearch.put(SearchParameter.BRAND.getName(),
                 condition -> {
                     return advert -> Objects.equals(
                             advert.getNameBrand() == null ? "null" : advert.getNameBrand().toLowerCase(),
                             condition.toLowerCase()
                     );
                 });
-        conditionsForSearch.put(COLOR_PARAM,
+        conditionsForSearch.put(SearchParameter.COLOR.getName(),
                 condition -> {
                     return advert -> Objects.equals(
                             advert.getColor() == null ? "null" : advert.getColor().toLowerCase(),
                             condition.toLowerCase()
                     );
                 });
-        conditionsForSearch.put(PRICE_PARAM,
+        conditionsForSearch.put(SearchParameter.PRICE.getName(),
                 condition -> {
                     return advert -> Objects.equals(
                             advert.getPrice() == null ? "null" : advert.getPrice(),
